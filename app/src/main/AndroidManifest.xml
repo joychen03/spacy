@@ -12,9 +12,15 @@
         android:theme="@style/Theme.Spacy"
         tools:targetApi="33">
         <activity
+            android:name=".ResultActivity"
+            android:exported="false" />
+        <activity
+            android:name=".GameActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
-            android:theme="@style/Theme.Spacy.Splash"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/Theme.Spacy.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

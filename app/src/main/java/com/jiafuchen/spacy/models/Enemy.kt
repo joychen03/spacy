@@ -1,25 +1,54 @@
 package com.jiafuchen.spacy.models
 
 import android.content.Context
+import android.content.res.Resources
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Canvas
 import com.jiafuchen.spacy.R
 import java.util.Random
 
-class Enemy(val context: Context, val screenWidth: Int, val screenHeight: Int) {
+class Enemy(private val image : Bitmap) {
 
-    val enemy = BitmapFactory.decodeResource(context.resources, R.drawable.alient_ship)
-    val random = Random()
-    var x = 0
-    var y = 0
-    var speed = 0
+    var x: Int = 0
+    var y: Int = 0
+    var w: Int = 0
+    var h: Int = 0
+    private var xVelocity = 20
+    private var yVelocity = 20
+    private val screenWidth = Resources.getSystem().displayMetrics.widthPixels
+    private val screenHeight = Resources.getSystem().displayMetrics.heightPixels
 
     init {
-        resetPosition()
+        w = image.width
+        h = image.height
+
+        x = screenWidth/2
+        y = screenHeight/2
     }
-    private fun resetPosition() {
-        x = 200 + random.nextInt(400)
-        y = 0
-        speed = 14 + random.nextInt(10)
+
+    /**
+     * Draws the object on to the canvas.
+     */
+    fun draw(canvas: Canvas) {
+        canvas.drawBitmap(image, x.toFloat(), y.toFloat(), null)
+    }
+
+    /**
+     * update properties for the game object
+     */
+    fun update() {
+        // val randomNum = ThreadLocalRandom.current().nextInt(1, 5)
+
+        if (x > screenWidth - image.width || x < image.width - image.width) {
+            xVelocity *= -1
+        }
+        if (y > screenHeight - image.height || y < image.height - image.height) {
+            yVelocity *= -1
+        }
+
+        x += (xVelocity)
+        y += (yVelocity)
     }
 
 

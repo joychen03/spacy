@@ -1,27 +1,40 @@
 package com.jiafuchen.spacy.models
 
-import android.content.Context
-import android.graphics.BitmapFactory
-import com.jiafuchen.spacy.R
-import com.jiafuchen.spacy.ui.SpacyGame
-import java.util.Random
+import android.content.res.Resources
+import android.graphics.Bitmap
+import android.graphics.Canvas
 
-class Player(val context : Context, val screenWidth : Int, val screenHeight : Int) {
+class Player(private val image : Bitmap) {
 
-    val player = BitmapFactory.decodeResource(context.resources, R.drawable.space_ship)
-    private val random = Random()
-    var x = 0
-    var y = 0
-    var speed = 0
+    private var x: Int = 0
+    private var y: Int = 0
+    private val w: Int
+    private val h: Int
+    private val screenWidth = Resources.getSystem().displayMetrics.widthPixels
+    private val screenHeight = Resources.getSystem().displayMetrics.heightPixels
 
     init {
-        resetPosition()
+        w = image.width
+        h = image.height
+
+        x = screenWidth/2
+        y = screenHeight - 200
     }
 
-    private fun resetPosition() {
-        x = random.nextInt(screenWidth - player.width)
-        y = screenHeight - player.height - 200;
-        speed = 10 + random.nextInt(6)
+    /**
+     * Draws the object on to the canvas.
+     */
+    fun draw(canvas: Canvas) {
+        canvas.drawBitmap(image, x.toFloat(), y.toFloat(), null)
+    }
+
+    /**
+     * update properties for the game object
+     * when the player touches the screen, position the player bitmap there
+     */
+    fun updateTouch(touchX: Int, touchY: Int) {
+        x = touchX - w / 2
+        y = touchY - h / 2
     }
 
 

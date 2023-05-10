@@ -17,14 +17,4 @@ class GameActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
     }
-
-    override fun onCreateView(name: String, context: Context, attrs: AttributeSet): View {
-        try {
-            val size = Point(this.windowManager.currentWindowMetrics.bounds.width(),this.windowManager.currentWindowMetrics.bounds.height())
-            return SpacyGame(context, size)
-        } catch (e: Exception) {
-            println(e)
-            throw e;
-        }
-    }
 }

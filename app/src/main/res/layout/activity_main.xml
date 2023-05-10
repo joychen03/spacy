@@ -7,7 +7,6 @@
     tools:context=".MainActivity">
 
     <ImageView
-        android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:srcCompat="@drawable/backgroud"
@@ -25,14 +24,13 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
-            android:id="@+id/imageButton"
+            android:id="@+id/play"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@null"
             app:srcCompat="@drawable/play_button" />
 
         <TextView
-            android:id="@+id/textView"
             android:layout_marginTop="20dp"
             android:textSize="40sp"
             android:textColor="@color/white"

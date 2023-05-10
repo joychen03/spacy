@@ -12,10 +12,10 @@
         android:theme="@style/Theme.Spacy"
         tools:targetApi="33">
         <activity
-            android:name=".ResultActivity"
+            android:name=".ui.ResultActivity"
             android:exported="false" />
         <activity
-            android:name=".GameActivity"
+            android:name=".ui.GameActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

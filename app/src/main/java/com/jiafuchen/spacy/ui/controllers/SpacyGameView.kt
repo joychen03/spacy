@@ -34,25 +34,6 @@ import kotlinx.coroutines.runBlocking
 
 
 class SpacyGameView(context : Context, attributes: AttributeSet) : SurfaceView(context, attributes), SurfaceHolder.Callback {
-    companion object{
-        var BACKGROUND_IMAGE = R.drawable.background
-        var PLAYER_IMAGE = R.drawable.space_ship
-        var PLAYER_SIZE = 200
-        var ENEMY_SIZE = 200
-        var MAX_ENEMIES = 10
-        var MAX_SPEED = 20
-        var MIN_SPEED = 5
-
-        var ENEMIES_IMAGES = mutableListOf(
-            R.drawable.alient_1,
-            R.drawable.alient_2,
-            R.drawable.alient_3,
-            R.drawable.alient_4,
-            R.drawable.alient_5,
-            R.drawable.alient_6,
-            R.drawable.alient_7,
-        )
-    }
 
     val score: MutableLiveData<Int> by lazy {
         MutableLiveData<Int>(0)
@@ -65,11 +46,12 @@ class SpacyGameView(context : Context, attributes: AttributeSet) : SurfaceView(c
     var shottingJob : Job? = null
     var playerBuffJob : Job? = null
 
+    private var maxSpawnTime = 10000
     private var enemies = mutableListOf<Enemy>()
     private var shots = mutableListOf<Shot>()
     private var buffs = mutableListOf<Buff>()
-    private val player = Player(getResizedBitmap(PLAYER_IMAGE, PLAYER_SIZE, PLAYER_SIZE))
-    private val background = getResizedBitmap(BACKGROUND_IMAGE, Resources.getSystem().displayMetrics.widthPixels, Resources.getSystem().displayMetrics.heightPixels)
+    private val player = Player(getResizedBitmap(GameParams.PLAYER_IMAGE, GameParams.PLAYER_SIZE, GameParams.PLAYER_SIZE))
+    private val background = getResizedBitmap(GameParams.BACKGROUND_IMAGE, Resources.getSystem().displayMetrics.widthPixels, Resources.getSystem().displayMetrics.heightPixels)
     private var touched: Boolean = false
     private var touched_x: Int = 0
     private var touched_y: Int = 0
@@ -115,6 +97,9 @@ class SpacyGameView(context : Context, attributes: AttributeSet) : SurfaceView(c
                 if(!checkEnemy(enemies[i])){
                     enemies.removeAt(i)
                     score.postValue((score.value ?: 0) + 1)
+                    if(maxSpawnTime > 700){
+                        maxSpawnTime -= 200
+                    }
                 }else{
                     enemies[i].draw(canvas)
                 }
@@ -214,14 +199,14 @@ class SpacyGameView(context : Context, attributes: AttributeSet) : SurfaceView(c
     fun startJobs(){
         paused = false
         generatingEnemyJob = CoroutineScope(Dispatchers.IO).launch {
-            while (enemies.size < MAX_ENEMIES){
+            while (enemies.size < GameParams.MAX_ENEMIES){
                 if(firstInit){
                     delay(1000)
                     firstInit = false
                 }else{
-                    delay((5000..10000).random().toLong())
+                    delay((5000..maxSpawnTime).random().toLong())
                 }
-                val enemy = Enemy(getResizedBitmap(ENEMIES_IMAGES.random(), ENEMY_SIZE, ENEMY_SIZE))
+                val enemy = Enemy(getResizedBitmap(GameParams.ENEMIES_IMAGES.random(), GameParams.ENEMY_SIZE, GameParams.ENEMY_SIZE))
                 enemies.add(enemy)
             }
         }
@@ -235,7 +220,7 @@ class SpacyGameView(context : Context, attributes: AttributeSet) : SurfaceView(c
 
         playerBuffJob = CoroutineScope(Dispatchers.IO).launch {
             while (true){
-                delay((5000..10000).random().toLong())
+                delay(5000)
                 (0..2).random().let {
                     when(it){
                         0 -> {

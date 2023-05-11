@@ -9,9 +9,9 @@ class Enemy(val image : Bitmap) {
 
     var x: Int = 0
     var y: Int = 0
-    private var life = GameParams.ENEMY_LIFE
-    private var xVelocity = (GameParams.ENEMY_MIN_SPEED ..GameParams.ENEMY_MAX_SPEED).random()
-    private var yVelocity = (GameParams.ENEMY_MIN_SPEED ..GameParams.ENEMY_MAX_SPEED).random()
+    var life = GameParams.ENEMY_LIFE
+    var xVelocity = (GameParams.ENEMY_MIN_SPEED ..GameParams.ENEMY_MAX_SPEED).random()
+    var yVelocity = (GameParams.ENEMY_MIN_SPEED ..GameParams.ENEMY_MAX_SPEED).random()
 
     private val screenWidth = Resources.getSystem().displayMetrics.widthPixels
     private val screenHeight = Resources.getSystem().displayMetrics.heightPixels

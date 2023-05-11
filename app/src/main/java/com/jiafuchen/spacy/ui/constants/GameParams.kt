@@ -17,8 +17,8 @@ object GameParams {
 
     var ENEMY_LIFE = 20
     var ENEMY_SIZE = 200
-    var MAX_ENEMIES = 10
-    var ENEMY_MAX_SPEED = 10
+    var MAX_ENEMIES = 15
+    var ENEMY_MAX_SPEED = 30
     var ENEMY_MIN_SPEED = 5
 
     var BUFF_SIZE = 200

@@ -6,7 +6,7 @@ import android.view.SurfaceHolder
 class GameThread(private val surfaceHolder: SurfaceHolder, private val gameView: SpacyGameView) : Thread() {
     private var running: Boolean = false
  
-    private val targetFPS = 50 // frames per second, the rate at which you would like to refresh the Canvas
+    private val targetFPS = 60
  
     fun setRunning(isRunning: Boolean) {
         this.running = isRunning
@@ -23,7 +23,6 @@ class GameThread(private val surfaceHolder: SurfaceHolder, private val gameView:
             canvas = null
  
             try {
-                // locking the canvas allows us to draw on to it
                 canvas = this.surfaceHolder.lockCanvas()
                 synchronized(surfaceHolder) {
                     this.gameView.update()

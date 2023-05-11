@@ -3,14 +3,19 @@ package com.jiafuchen.spacy.models
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Canvas
 import com.jiafuchen.spacy.R
+import com.jiafuchen.spacy.ui.constants.GameParams
 
-class Shot(val context : Context, val screenWidth : Int, val screenHeight : Int) {
+class Shot(val image : Bitmap, var x : Int, var y : Int) {
 
-    val bullet = BitmapFactory.decodeResource(context.resources, R.drawable.bullet)
+    private val screenWidth = 0
+    private val screenHeight = 0
 
-    fun getShot() : Bitmap {
-        return bullet
+    fun draw(canvas: Canvas) {
+        canvas.drawBitmap(image, x.toFloat(), y.toFloat(), null)
     }
-
+    fun update(speed : Int) {
+        y -= speed
+    }
 }

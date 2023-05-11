@@ -1,30 +1,39 @@
 package com.jiafuchen.spacy.models
 
-import android.content.Context
 import android.content.res.Resources
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.Canvas
-import com.jiafuchen.spacy.R
-import java.util.Random
+import com.jiafuchen.spacy.ui.constants.GameParams
 
-class Enemy(private val image : Bitmap) {
+class Enemy(val image : Bitmap) {
 
     var x: Int = 0
     var y: Int = 0
-    var w: Int = 0
-    var h: Int = 0
-    private var xVelocity = 20
-    private var yVelocity = 20
+    private var life = GameParams.ENEMY_LIFE
+    private var xVelocity = (GameParams.ENEMY_MIN_SPEED ..GameParams.ENEMY_MAX_SPEED).random()
+    private var yVelocity = (GameParams.ENEMY_MIN_SPEED ..GameParams.ENEMY_MAX_SPEED).random()
+
     private val screenWidth = Resources.getSystem().displayMetrics.widthPixels
     private val screenHeight = Resources.getSystem().displayMetrics.heightPixels
-
     init {
-        w = image.width
-        h = image.height
-
-        x = screenWidth/2
-        y = screenHeight/2
+        when ((1..4).random()) {
+            1 -> {
+                x = 0
+                y = 0
+            }
+            2 -> {
+                x = screenWidth - image.width
+                y = 0
+            }
+            3 -> {
+                x = 0
+                y = screenHeight - image.height
+            }
+            4 -> {
+                x = screenWidth - image.width
+                y = screenHeight - image.height
+            }
+        }
     }
 
     /**
@@ -39,11 +48,10 @@ class Enemy(private val image : Bitmap) {
      */
     fun update() {
         // val randomNum = ThreadLocalRandom.current().nextInt(1, 5)
-
-        if (x > screenWidth - image.width || x < image.width - image.width) {
+        if (x > screenWidth - image.width || x < 0) {
             xVelocity *= -1
         }
-        if (y > screenHeight - image.height || y < image.height - image.height) {
+        if (y > screenHeight - image.height || y < 0) {
             yVelocity *= -1
         }
 
@@ -51,5 +59,12 @@ class Enemy(private val image : Bitmap) {
         y += (yVelocity)
     }
 
+    fun hit( damage : Int) {
+        life -= damage
+    }
+
+    fun isDead() : Boolean {
+        return life <= 0
+    }
 
 }

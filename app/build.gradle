@@ -49,4 +49,10 @@ dependencies {
     //Splash API
     implementation 'androidx.core:core-splashscreen:1.0.1'
 
+    //Lifecycle coroutine
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.1'
+
+    //Coroutine
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1'
+
 }

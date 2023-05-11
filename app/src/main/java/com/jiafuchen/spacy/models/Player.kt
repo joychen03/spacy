@@ -3,38 +3,31 @@ package com.jiafuchen.spacy.models
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import com.jiafuchen.spacy.ui.constants.GameParams
 
-class Player(private val image : Bitmap) {
+class Player(val image : Bitmap) {
 
-    private var x: Int = 0
-    private var y: Int = 0
-    private val w: Int
-    private val h: Int
+    var x: Int = 0
+    var y: Int = 0
+    var shotSpeed = GameParams.PLAYER_BULLET_SPEED
+    var shotFrequency = GameParams.PLAYER_BULLET_FREQUENCY
+    var shotDamage = GameParams.PLAYER_BULLET_DAMAGE
+
     private val screenWidth = Resources.getSystem().displayMetrics.widthPixels
     private val screenHeight = Resources.getSystem().displayMetrics.heightPixels
 
     init {
-        w = image.width
-        h = image.height
-
         x = screenWidth/2
-        y = screenHeight - 200
+        y = screenHeight/2
     }
 
-    /**
-     * Draws the object on to the canvas.
-     */
     fun draw(canvas: Canvas) {
         canvas.drawBitmap(image, x.toFloat(), y.toFloat(), null)
     }
 
-    /**
-     * update properties for the game object
-     * when the player touches the screen, position the player bitmap there
-     */
-    fun updateTouch(touchX: Int, touchY: Int) {
-        x = touchX - w / 2
-        y = touchY - h / 2
+    fun update(touchX: Int, touchY: Int) {
+        x = touchX - image.width / 2
+        y = touchY - image.height / 2
     }
 
 

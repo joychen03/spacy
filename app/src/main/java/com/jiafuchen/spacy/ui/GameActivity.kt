@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.AttributeSet
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import com.jiafuchen.spacy.databinding.ActivityGameBinding
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.runBlocking
@@ -19,6 +20,11 @@ class GameActivity : AppCompatActivity() {
         binding = ActivityGameBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val scoreObserver = Observer<Int> { score ->
+            binding.scorePoints.text = "Score : ${score}"
+        }
+
+        binding.gameView.score.observe(this, scoreObserver)
     }
 
     override fun onResume() {
@@ -40,6 +46,7 @@ class GameActivity : AppCompatActivity() {
         if(binding.gameView.generatingEnemyJob?.isActive == true){
             binding.gameView.finish()
         }
+        this.finish()
     }
 
     override fun onBackPressed() {

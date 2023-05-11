@@ -10,6 +10,7 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.SurfaceHolder
 import android.view.SurfaceView
+import androidx.lifecycle.MutableLiveData
 import com.jiafuchen.spacy.R
 import com.jiafuchen.spacy.models.Buff
 import com.jiafuchen.spacy.models.DamageBuff
@@ -25,7 +26,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
@@ -49,6 +52,10 @@ class SpacyGameView(context : Context, attributes: AttributeSet) : SurfaceView(c
             R.drawable.alient_6,
             R.drawable.alient_7,
         )
+    }
+
+    val score: MutableLiveData<Int> by lazy {
+        MutableLiveData<Int>(0)
     }
 
     var firstInit = true
@@ -79,17 +86,6 @@ class SpacyGameView(context : Context, attributes: AttributeSet) : SurfaceView(c
         thread.start()
 
         startJobs()
-//        generatingEnemyJob = CoroutineScope(Dispatchers.IO).launch {
-//            while (enemies.size < MAX_ENEMIES){
-//                val enemy = Enemy(getResizedBitmap(ENEMIES_IMAGES.random(), ENEMY_SIZE, ENEMY_SIZE))
-//                enemies.add(enemy)
-//                delay((2000..10000).random().toLong())
-////                if(player.shotFrequency - 200 < 0) player.shotFrequency = 50 else player.shotFrequency -= 200
-////                player.shotDamage ++
-////                player.shotSpeed += 5
-//            }
-//        }
-
 
     }
 
@@ -118,6 +114,7 @@ class SpacyGameView(context : Context, attributes: AttributeSet) : SurfaceView(c
             for(i in enemies.lastIndex downTo 0){
                 if(!checkEnemy(enemies[i])){
                     enemies.removeAt(i)
+                    score.postValue((score.value ?: 0) + 1)
                 }else{
                     enemies[i].draw(canvas)
                 }
@@ -187,6 +184,7 @@ class SpacyGameView(context : Context, attributes: AttributeSet) : SurfaceView(c
             CoroutineScope(Dispatchers.Main).launch {
                 finish()
                 val intent = Intent(context, ResultActivity::class.java)
+                intent.putExtra("score", score.value.toString())
                 context.startActivity(intent)
             }
         }
